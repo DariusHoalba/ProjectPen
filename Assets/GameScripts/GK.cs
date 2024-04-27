@@ -24,7 +24,9 @@ public class GK : MonoBehaviour
 
     public void GoalMove()
     {
-        index = Random.Range(0, Pos.Length);
+        //index = Random.Range(0, Pos.Length);
+        //Move = Pos[index];
+        index = 2;
         Move = Pos[index];
     }
 

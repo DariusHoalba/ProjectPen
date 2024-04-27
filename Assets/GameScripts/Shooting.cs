@@ -21,7 +21,7 @@ public class Shooting : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            Force++;
+            //Force++;
         }
 
         if(Input.GetKeyUp(KeyCode.Space))
@@ -40,13 +40,15 @@ public class Shooting : MonoBehaviour
     IEnumerator Wait()
     {
         yield return new WaitForSeconds(1.5f);
-        shoot();
-        yield return new WaitForSeconds(0.05f);
+
+
         FindObjectOfType<GK>().GoalMove();
+        yield return new WaitForSeconds(0.75f);
+        shoot();
         yield return new WaitForSeconds(1.5f);
-        Force = 0;
+        //Force = 0;
         GetComponent<Rigidbody>().angularDrag = 40;
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(2.5f);
         transform.position = StartPos;
         GoalKeeper.transform.position = GoalPos;
         FindObjectOfType<GK>().Reset();
