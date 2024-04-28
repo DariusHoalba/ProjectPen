@@ -25,8 +25,15 @@ public class ClassSelectionAvailableExample : MonoBehaviour
     private bool _update = false;
 
     private bool completedShoot = true;
+
+    private int[] lastSelections = new int[3];
+    
     void Start()
     {
+        for(int i = 0; i < 3; i++)
+        {
+            lastSelections[i] = 0;
+        }
         //attach to class selection available event
         BCIManager.Instance.ClassSelectionAvailable += OnClassSelectionAvailable;
         StartPos = ball.transform.position;
@@ -56,12 +63,24 @@ public class ClassSelectionAvailableExample : MonoBehaviour
         BCIManager.Instance.ClassSelectionAvailable -= OnClassSelectionAvailable;
     }
 
+    bool isSureClass()
+    {
+        for(int i=0; i<2; i++)
+        {
+            if(lastSelections[i] != lastSelections[i+1])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     void Update()
     {
         //TODO ADD YOUR CODE HERE
-        if(_update && completedShoot)
+        if(_update && completedShoot && isSureClass())
         {
-            switch (_selectedClass)
+            switch (lastSelections[2])
             {
                 case 0:
                     break;
@@ -100,6 +119,11 @@ public class ClassSelectionAvailableExample : MonoBehaviour
        _selectedClass = ea.Class;
         _update = true;
         Debug.Log(string.Format("Selected class: {0}", ea.Class));
+        for(int i = 0; i < 2; i++)
+        {
+            lastSelections[i] = lastSelections[i + 1];
+        }
+        lastSelections[2] = (int)ea.Class;
     }
 
     void shoot(int direction)
@@ -109,7 +133,7 @@ public class ClassSelectionAvailableExample : MonoBehaviour
         else if(direction == 1)
             target.position = new Vector3(-4f, 7.62f, 3.7f);
         else
-             target.position = new Vector3(-4f, 7.62f, 0.34f);
+             target.position = new Vector3(-4f, 8.5f, 0.05f);
 
         Vector3 Shoot = (target.position - ball.transform.position).normalized;
         ball.GetComponent<Rigidbody>().angularDrag = 1;
